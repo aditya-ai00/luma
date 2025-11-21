@@ -70,7 +70,7 @@ Double-click `index.html` to open it in any browser.
 ---
 
 ## 🎥 Demo Video  
-(Will be added after posting on LinkedIn for Day 1)
+https://www.linkedin.com/posts/aditya-kumar23_murfaivoiceagentschallenge-10daysofaivoiceagents-activity-7397720518960799744-J9VO?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEQl_lQBHLQgBKQEHkCz2NSLebMKSqsWFi0
 
 ---
 
