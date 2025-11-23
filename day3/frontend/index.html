@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Health Companion — Day 3</title>
+  <style>
+    :root{--bg:#0e1116;--card:#131722;--accent:#4bb3ff;--muted:#9aa7c7;font-family:Inter,Arial,sans-serif}
+    body{background:var(--bg);color:#e6f7ff;margin:0;padding:18px;display:flex;justify-content:center}
+    .wrap{width:100%;max-width:680px}
+    .title{background:var(--card);padding:12px;border-radius:8px;border:1px solid rgba(75,179,255,0.08);text-align:center;margin-bottom:10px}
+    .title h1{margin:0;color:var(--accent);font-size:18px}
+    .box{background:#0f1318;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)}
+    .banner{width:100%;height:90px;border-radius:6px;background:linear-gradient(90deg, rgba(0,180,255,0.08), rgba(123,60,255,0.06));display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+    .chat{min-height:110px;max-height:260px;overflow:auto;padding:8px;font-size:14px;line-height:1.4}
+    .input-row{display:flex;gap:8px;margin-top:10px}
+    input{flex:1;padding:10px;border-radius:6px;border:1px solid #21262f;background:#0b0f14;color:#e6f7ff}
+    button{background:var(--accent);border:none;padding:10px 14px;border-radius:6px;color:#041018;font-weight:700;cursor:pointer}
+    .wellness{margin-top:12px;padding:10px;background:#0b0f14;border-radius:6px;border:1px solid rgba(255,255,255,0.02);font-family:monospace;white-space:pre-wrap}
+    audio{width:100%;margin-top:10px;border-radius:6px;background:#081018}
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="title"><h1>Health & Wellness Voice Companion</h1></div>
+
+    <div class="box">
+     
+      <div id="chat" class="chat">
+        👋 Welcome! Let's begin your wellness check.<br><br>👉 Please start by telling me your <b>name</b>.
+      </div>
+
+      <div class="input-row">
+        <input id="text" placeholder="Type here, e.g. My name is Aditya" />
+        <button id="sendBtn">Send</button>
+      </div>
+
+      <audio id="player" controls></audio>
+      <div class="note">Tip: serve this page via Live Server or `python3 -m http.server` so audio autoplay works.</div>
+
+      <div class="note">Wellness data (saved on server):</div>
+      <div id="wellness" class="wellness">No data yet</div>
+    </div>
+  </div>
+
+<script>
+  const api = "http://localhost:8000/api/wellness";
+  const chat = document.getElementById("chat");
+  const wellnessBox = document.getElementById("wellness");
+  const player = document.getElementById("player");
+  const input = document.getElementById("text");
+  const sendBtn = document.getElementById("sendBtn");
+
+  async function sendText() {
+    const text = input.value.trim();
+    if (!text) return;
+    chat.innerHTML += "<div style='margin-top:8px'><b>You:</b> " + escapeHtml(text) + "</div>";
+    input.value = "";
+    try {
+      const res = await fetch(api, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ text })
+      });
+      const data = await res.json();
+      chat.innerHTML += "<div style='margin-top:8px'><b>Agent:</b> " + escapeHtml(data.reply) + "</div>";
+      wellnessBox.textContent = JSON.stringify(data.wellness, null, 2);
+      if (data.audioUrl) {
+        player.src = data.audioUrl;
+        player.play().catch(e => console.warn("Autoplay blocked:", e));
+      }
+      chat.scrollTop = chat.scrollHeight;
+    } catch (err) {
+      console.error("Fetch error:", err);
+      chat.innerHTML += "<div style='margin-top:8px'><b>Agent:</b> Error contacting server</div>";
+    }
+  }
+
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  sendBtn.onclick = sendText;
+  input.addEventListener("keydown", e => { if (e.key === "Enter") sendText(); });
+</script>
+</body>
+</html>
 
