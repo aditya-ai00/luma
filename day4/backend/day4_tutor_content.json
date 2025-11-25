@@ -1,1 +1,15 @@
+[
+  {
+    "id": "variables",
+    "title": "Variables",
+    "summary": "A variable stores a value so you can reuse it later. Think of a variable as a labeled container.",
+    "sample_question": "What is a variable and why is it useful?"
+  },
+  {
+    "id": "loops",
+    "title": "Loops",
+    "summary": "Loops help repeat actions automatically, so you don't write the same line many times.",
+    "sample_question": "Explain the difference between a for loop and a while loop."
+  }
+]
 
