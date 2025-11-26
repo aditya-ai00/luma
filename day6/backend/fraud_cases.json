@@ -1,1 +1,18 @@
-
+[
+  {
+    "id": "case1",
+    "userName": "Aditya",
+    "securityIdentifier": "ZX91",
+    "cardEnding": "4242",
+    "transactionName": "ABC Online Store",
+    "transactionAmount": "₹3,499.00",
+    "transactionTime": "2025-11-20 14:32",
+    "transactionLocation": "Mumbai, India",
+    "transactionCategory": "e-commerce",
+    "transactionSource": "abcstore.example",
+    "status": "confirmed_safe",
+    "securityQuestion": "What is your favourite sport?",
+    "securityAnswer": "cricket",
+    "note": "Customer confirmed transaction as legitimate. No action required."
+  }
+]
