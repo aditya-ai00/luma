@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureBank Fraud Agent</title>
+  <style>
+    body {
+      margin: 0;
+      background: #05070d;
+      font-family: "Poppins", sans-serif;
+      color: #f5f7ff;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+    .card {
+      width: 450px;
+      background: #101421;
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid #1e90ff55;
+      box-shadow: 0 0 28px rgba(30, 144, 255, 0.28);
+    }
+    h2 {
+      text-align: center;
+      margin: 0 0 14px;
+      color: #1e90ff;
+    }
+    .chat {
+      max-height: 320px;
+      overflow-y: auto;
+      background: #0a0e18;
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .bubble {
+      padding: 9px 11px;
+      border-radius: 9px;
+      margin: 6px 0;
+      max-width: 85%;
+    }
+    .user {
+      background: #1e3bff;
+      margin-left: auto;
+    }
+    .bot {
+      background: #181f2e;
+    }
+    input, button {
+      width: 100%;
+      padding: 11px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      margin-top: 8px;
+      outline: none;
+    }
+    input {
+      background: #080c14;
+      color: #f5f7ff;
+    }
+    button {
+      background: #1e90ff;
+      color: #02050a;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    audio {
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+    pre {
+      margin-top: 10px;
+      background: #080c14;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #9cc4ff;
+      overflow-x: auto;
+    }
+    .hint {
+      font-size: 12px;
+      margin-top: 6px;
+      color: #8d9bbc;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🏦 SecureBank Fraud Agent</h2>
+
+    <div id="chat" class="chat"></div>
+
+    <input id="text" placeholder="Start by typing your name (e.g., Aditya) or 'reset'." />
+    <button onclick="sendText()">Send</button>
+
+    <audio id="player" controls></audio>
+
+    <div class="hint">
+      Flow: name ➝ security answer ➝ yes/no on transaction. Type <b>reset</b> to restart.
+    </div>
+
+    <pre id="caseBox">Fraud case will appear here after verification.</pre>
+  </div>
+
+  <script>
+    const api = "http://localhost:8000/api/fraud";
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("text");
+    const player = document.getElementById("player");
+    const caseBox = document.getElementById("caseBox");
+
+    function addMsg(msg, who) {
+      const div = document.createElement("div");
+      div.className = "bubble " + who;
+      div.textContent = msg;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendText() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMsg(text, "user");
+      input.value = "";
+
+      try {
+        const res = await fetch(api, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        const data = await res.json();
+
+        addMsg(data.reply, "bot");
+
+        if (data.audioUrl) {
+          player.src = data.audioUrl;
+          player.play().catch(() => {});
+        }
+
+        if (data.fraudCase) {
+          caseBox.textContent = JSON.stringify(data.fraudCase, null, 2);
+        }
+      } catch (err) {
+        console.error(err);
+        addMsg("Error contacting server.", "bot");
+      }
+    }
+
+    // greet message
+    addMsg(
+      "Hello, this is SecureBank's fraud monitoring unit. Please type your first name to begin the fraud check demo.",
+      "bot"
+    );
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendText();
+    });
+  </script>
+</body>
+</html>
 
