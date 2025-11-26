@@ -1,1 +1,18 @@
-
+[
+  {
+    "question": "What does Zomato do?",
+    "answer": "Zomato is a food delivery and restaurant discovery platform."
+  },
+  {
+    "question": "Do you offer subscription plans?",
+    "answer": "Yes, we offer Zomato Gold and Zomato Pro subscription benefits."
+  },
+  {
+    "question": "Do you have a free tier?",
+    "answer": "Users can browse restaurants for free, but eating offers require a subscription."
+  },
+  {
+    "question": "Who can use Zomato?",
+    "answer": "Individual users, restaurants and cloud kitchen businesses."
+  }
+]
