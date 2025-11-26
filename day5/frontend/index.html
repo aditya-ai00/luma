@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Zomato SDR</title>
+<style>
+body { margin:0; background:#090c12; font-family:Poppins; display:flex; justify-content:center; padding-top:45px; }
+.card { width:450px; background:#131722; padding:25px; border-radius:18px;
+        border:1px solid rgba(255,0,0,0.4); box-shadow:0 0 25px rgba(255,0,0,0.25);}
+h2 { text-align:center; color:#ff4b4b; }
+.chat { max-height:330px; overflow-y:auto; background:#0e121a; padding:12px; border-radius:12px; }
+.bubble { padding:10px; margin:8px 0; border-radius:8px; max-width:85%; }
+.user { background:#2142ff; margin-left:auto; }
+.bot { background:#1e2431; }
+input, button { width:100%; padding:12px; border-radius:10px; margin-top:10px; border:none; font-size:15px; }
+button { background:#ff4b4b; color:black; font-weight:600; cursor:pointer; }
+audio { width:100%; margin-top:10px; }
+pre { background:#0e121a; padding:10px; border-radius:8px; margin-top:12px; font-size:13px; color:#9bd; }
+</style>
+</head>
+<body>
+<div class="card">
+<h2>🍽 Zomato — SDR Assistant</h2>
+<div id="chat" class="chat"></div>
+
+<input id="text" placeholder="Ask anything... (pricing, features or say 'I want to talk to sales')" />
+<button onclick="sendText()">Send</button>
+<audio id="player" controls></audio>
+<pre id="leadBox">Leads will appear here after capture.</pre>
+</div>
+
+<script>
+const api = "http://localhost:8000/api/sdr";
+const chat = document.getElementById("chat");
+const input = document.getElementById("text");
+const player = document.getElementById("player");
+const leadBox = document.getElementById("leadBox");
+
+function add(msg, who) {
+  const d = document.createElement("div");
+  d.className = "bubble " + who;
+  d.textContent = msg;
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendText() {
+  const text = input.value.trim();
+  if (!text) return;
+  add(text, "user");
+  input.value = "";
+  const r = await fetch(api, {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ text })
+  });
+  const data = await r.json();
+  add(data.reply, "bot");
+
+  if (data.audioUrl) {
+    player.src = data.audioUrl;
+    player.play();
+  }
+
+  leadBox.textContent = JSON.stringify(data.currentLead, null, 2);
+}
+</script>
+</body>
+</html>
 
