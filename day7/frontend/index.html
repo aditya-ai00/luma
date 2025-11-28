@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zepto Voice Grocery Agent</title>
+<style>
+body {background:#2d0052;font-family:Poppins;color:white;display:flex;justify-content:center;padding-top:40px;}
+.card {width:420px;background:#3b006e;padding:20px;border-radius:18px;box-shadow:0 0 20px rgba(255,0,255,0.4);}
+.chat {height:300px;overflow-y:auto;background:#240043;padding:12px;border-radius:12px;margin-bottom:10px;}
+.bubble {padding:10px;margin:8px 0;border-radius:12px;max-width:85%;}
+.user {background:#ae00ff;margin-left:auto;}
+.bot {background:#4c0078;}
+input,button {width:100%;padding:12px;border-radius:10px;border:none;margin-top:10px;}
+input {background:#1b0036;color:white;}
+button {background:#ff36ee;color:black;font-weight:600;cursor:pointer;}
+audio {width:100%;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>🛒 Zepto Voice Grocery Ordering</h2>
+<div id="chat" class="chat"></div>
+<input id="text" placeholder="Say something…" />
+<button onclick="sendText()">Send</button>
+<audio id="player" controls></audio>
+</div>
+<script>
+const api="http://localhost:8000/api/order";
+const chat=document.getElementById("chat");
+const input=document.getElementById("text");
+const player=document.getElementById("player");
+
+function msg(m,cls){
+  const d=document.createElement("div");
+  d.className="bubble "+cls;
+  d.textContent=m;
+  chat.appendChild(d);
+  chat.scrollTop=chat.scrollHeight;
+}
+async function sendText(){
+  const t=input.value.trim(); if(!t) return;
+  msg(t,"user"); input.value="";
+  const r=await fetch(api,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
+  const j=await r.json();
+  msg(j.reply,"bot");
+  if(j.audioUrl){ player.src=j.audioUrl; player.play().catch(()=>{}); }
+}
+</script>
+</body>
+</html>
 
