@@ -1,1 +1,13 @@
 
+[
+  { "name": "Milk", "price": 60 },
+  { "name": "Bread", "price": 50 },
+  { "name": "Peanut Butter", "price": 220 },
+  { "name": "Eggs", "price": 90 },
+  { "name": "Butter", "price": 80 },
+  { "name": "Pasta", "price": 120 },
+  { "name": "Tomato Sauce", "price": 140 },
+  { "name": "Potato Chips", "price": 40 },
+  { "name": "Curd", "price": 45 },
+  { "name": "Maggi", "price": 15 }
+]
