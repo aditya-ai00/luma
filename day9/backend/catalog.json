@@ -1,1 +1,103 @@
+[
+  {
+    "id": "tee-001",
+    "name": "Men's Graphic T-Shirt",
+    "description": "Black cotton graphic tee",
+    "category": "tshirt",
+    "price": 599,
+    "currency": "INR",
+    "color": "black",
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "id": "tee-002",
+    "name": "Women's Oversized T-Shirt",
+    "description": "Lavender oversized fit tee",
+    "category": "tshirt",
+    "price": 749,
+    "currency": "INR",
+    "color": "lavender",
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": "hood-001",
+    "name": "Unisex Black Hoodie",
+    "description": "Fleece hoodie with kangaroo pocket",
+    "category": "hoodie",
+    "price": 1299,
+    "currency": "INR",
+    "color": "black",
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": "hood-002",
+    "name": "Blue Zip Hoodie",
+    "description": "Slim fit hoodie with zip closure",
+    "category": "hoodie",
+    "price": 1499,
+    "currency": "INR",
+    "color": "blue",
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": "shoe-001",
+    "name": "Running Shoes",
+    "description": "Lightweight running shoes",
+    "category": "shoes",
+    "price": 1899,
+    "currency": "INR",
+    "color": "grey",
+    "sizes": ["7", "8", "9", "10"]
+  },
+  {
+    "id": "shoe-002",
+    "name": "White Sneakers",
+    "description": "Everyday white sneakers",
+    "category": "shoes",
+    "price": 2199,
+    "currency": "INR",
+    "color": "white",
+    "sizes": ["6", "7", "8", "9"]
+  },
+  {
+    "id": "bag-001",
+    "name": "Casual Backpack",
+    "description": "Laptop compatible backpack",
+    "category": "bag",
+    "price": 999,
+    "currency": "INR",
+    "color": "navy",
+    "sizes": []
+  },
+  {
+    "id": "head-001",
+    "name": "Wireless Headphones",
+    "description": "Over-ear Bluetooth headphones",
+    "category": "electronics",
+    "price": 2499,
+    "currency": "INR",
+    "color": "black",
+    "sizes": []
+  },
+  {
+    "id": "watch-001",
+    "name": "Smartwatch",
+    "description": "Fitness tracking smartwatch",
+    "category": "electronics",
+    "price": 2999,
+    "currency": "INR",
+    "color": "black",
+    "sizes": []
+  },
+  {
+    "id": "mouse-001",
+    "name": "Gaming Mouse",
+    "description": "RGB wired gaming mouse",
+    "category": "electronics",
+    "price": 899,
+    "currency": "INR",
+    "color": "black",
+    "sizes": []
+  }
+]
 
