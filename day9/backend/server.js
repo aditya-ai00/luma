@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // 🔑 Your Murf GEN2 API key
-const MURF_API_KEY = "ap2_898e892f-5eca-41f7-9644-ae0975a6fb19";
+const MURF_API_KEY = 
 
 // 📁 Data files
 const CATALOG_PATH = path.resolve("catalog.json");
