@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flipkart Smart Shopper — Voice Agent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f1f3f6;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+    .card {
+      width: 480px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+      border-top: 6px solid #2874F0;
+    }
+    h2 {
+      margin: 0 0 10px;
+      text-align: center;
+      color: #2874F0;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .chat {
+      height: 320px;
+      overflow-y: auto;
+      background: #f5f7fa;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #dde2ec;
+    }
+    .bubble {
+      padding: 9px 11px;
+      margin: 7px 0;
+      border-radius: 10px;
+      max-width: 85%;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .user {
+      margin-left: auto;
+      background: #2874F0;
+      color: #fff;
+    }
+    .bot {
+      background: #edf3ff;
+      color: #222;
+    }
+    input, button {
+      width: 100%;
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid #ccd2e0;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    input {
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 8px;
+      background: #FF9F00;
+      color: #000;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .hint {
+      font-size: 12px;
+      color: #777;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h2>Flipkart Smart Shopper 🛒</h2>
+    <div class="subtitle">Ask for hoodies, t-shirts, shoes and more. Talk, shop, done.</div>
+
+    <div id="chat" class="chat"></div>
+
+    <input id="text" placeholder='Try: "show me hoodies under 1500"' />
+    <button onclick="sendText()">Send</button>
+
+    <audio id="player" controls></audio>
+
+    <div class="hint">
+      Examples:  
+      • show me all t shirts under 800  
+      • I want black sneakers  
+      • I will buy the second one  
+      • what did I just buy?
+    </div>
+  </div>
+
+<script>
+
+ const API = "http://localhost:8000/api/shop";
+
+
+
+
+
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("text");
+  const player = document.getElementById("player");
+
+  function addMsg(msg, who) {
+    const div = document.createElement("div");
+    div.className = "bubble " + who;
+    div.textContent = msg;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+async function sendText() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMsg(text, "user");
+  input.value = "";
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await res.json();
+    addMsg(data.reply, "bot");
+
+    if (data.audioUrl) {
+      player.src = data.audioUrl;
+      player.play().catch(() => {});
+    }
+  } catch (err) {
+    addMsg("⚠️ Could not reach backend. Is server running?", "bot");
+  }
+}
+
+
+  // optional: send greeting on load
+  window.addEventListener("load", async () => {
+    const res = await fetch(API, {
+
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: "start" })
+    });
+    const data = await res.json();
+    addMsg(data.reply, "bot");
+    if (data.audioUrl) {
+      player.src = data.audioUrl;
+    }
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendText();
+  });
+</script>
+</body>
+</html>
 
